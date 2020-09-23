@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import './CardBuilder.dart';
-//import 'package:intent/intent.dart';
+import 'package:intent/intent.dart' as android_intent;
+import 'package:intent/action.dart' as android_action;
 
 void main() => runApp(MyApp());
 
@@ -14,7 +15,7 @@ class MyApp extends StatelessWidget {
           backgroundColor: Colors.blueAccent,
           body: SafeArea(
               child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               CircleAvatar(
                 radius: 50.0,
@@ -40,14 +41,31 @@ class MyApp extends StatelessWidget {
                 ),
               ),
               SizedBox(
-                height:20.0 ,
+                height: 20.0,
                 width: 150.0,
                 child: Divider(
                   color: Colors.teal.shade100,
                 ),
               ),
-              CardBuilder(ico:Icons.phone,textData :'+963 992 177 332'),
-              CardBuilder(ico:Icons.email,textData :'yaseen.hasanen@gmail.com'),
+              CardBuilder(
+                  ico: Icons.phone,
+                  textData: '+963 992 177 332',
+                  fun: () {
+                    android_intent.Intent()
+                      ..setAction(android_action.Action.ACTION_DIAL)
+                      ..setData(Uri(scheme: 'tel', path: '+963 992 177 332'))
+                      ..startActivity().catchError((e) => print(e));
+                  }),
+              CardBuilder(
+                  ico: Icons.email,
+                  textData: 'yaseen.hasanen@gmail.com',
+                  fun: () {
+                    android_intent.Intent()
+                      ..setAction(android_action.Action.ACTION_VIEW)
+                      ..setData(Uri(
+                          scheme: 'mailto', path: 'yaseen.hasanen@gmail.com'))
+                      ..startActivity().catchError((e) => print(e));
+                  }),
             ],
           )),
         ));
